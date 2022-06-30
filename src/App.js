@@ -1,5 +1,6 @@
 import Die from './components/Die';
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   function allNewDice() {
@@ -8,6 +9,7 @@ function App() {
       numArray.push({
         value: Math.ceil(Math.random() * 6),
         isHeld: false,
+        id: uuidv4(),
       });
     }
     return numArray;
@@ -15,19 +17,31 @@ function App() {
 
   const [dice, setDice] = useState(allNewDice());
 
-  // let objTest = {
-  //   value: 'randomnumber',
-  //   isHeld: false,
-  // };
-  // console.log(objTest);
+  function holdDice(id) {
+    const flipingDice = dice.map((die) => {
+      if (die.id === id) {
+        return { ...die, isHeld: die.isHeld === true ? false : true };
+      }
+      return die;
+    });
+    setDice(flipingDice);
+  }
 
   const diceNumber = dice.map((die) => {
-    return <Die value={die.value} />;
+    return (
+      <Die
+        value={die.value}
+        key={die.id}
+        isHeld={die.isHeld}
+        holdDice={() => holdDice(die.id)}
+      />
+    );
   });
 
   function rollingDice() {
     setDice(allNewDice());
   }
+  // console.log(dice[0].id);
 
   return (
     <main className="container h-96 mx-auto m-12 p-8 bg-[#F5F5F5] rounded-lg flex flex-col text-center justify-center font-inter font-bold">

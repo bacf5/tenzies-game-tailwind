@@ -16,7 +16,7 @@ function App() {
     };
   }
 
-  const [playbackRate, setPlaybackRate] = useState(0.75);
+  // const [playbackRate, setPlaybackRate] = useState(0.75);
 
   const [play] = useSound(soundies, {
     sprite: {

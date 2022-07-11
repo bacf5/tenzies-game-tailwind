@@ -2,6 +2,10 @@ import Die from './components/Die';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Confetti from 'react-confetti';
+import useSound from 'use-sound';
+// import clapsWin from './sound/claps-win.wav';
+// import freezeDice from './sound/freeze-dice.wav';
+import soundies from './sound/soundies.mp3';
 
 function App() {
   function newDie() {
@@ -11,6 +15,16 @@ function App() {
       id: uuidv4(),
     };
   }
+
+  const [playbackRate, setPlaybackRate] = useState(0.75);
+
+  const [play] = useSound(soundies, {
+    sprite: {
+      freeze: [0, 130],
+      dices: [956, 1157],
+      clap: [3000, 5465],
+    },
+  });
 
   function allNewDice() {
     const numArray = [];
@@ -33,6 +47,7 @@ function App() {
   }, [dice]);
 
   function holdDice(id) {
+    play({ id: 'freeze' });
     const flipingDice = dice.map((die) => {
       if (die.id === id) {
         return { ...die, isHeld: die.isHeld === true ? false : true };
@@ -49,12 +64,14 @@ function App() {
         key={die.id}
         isHeld={die.isHeld}
         holdDice={() => holdDice(die.id)}
+        soundHook={() => play(soundies)}
       />
     );
   });
 
   function rollingDice() {
     const checkIfWon = dice.every((die) => die.value === dice[0].value);
+    play({ id: 'dices' });
     if (checkIfWon) {
       setDice(allNewDice());
       setTenzies(false);
@@ -84,7 +101,13 @@ function App() {
           {tenzies ? 'New game 🏆' : 'Roll 🎲'}
         </button>
       </div>
+      <div>
+        <button className="h-auto w-auto bg-black text-white p-2 rounded-md">
+          test
+        </button>
+      </div>
       {tenzies && <Confetti />}
+      {tenzies && play({ id: 'clap' })}
     </main>
   );
 }

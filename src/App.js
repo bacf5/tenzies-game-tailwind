@@ -107,7 +107,7 @@ function App() {
       <div className="justify-center flex">
         <a href="https://github.com/bacf5/tenzies-game-tailwind">
           <svg
-            className="m-1"
+            className="m-1 hover:scale-125 ease-in duration-200"
             width="32px"
             height="32px"
             viewBox="0 0 32 32"
@@ -118,7 +118,7 @@ function App() {
         </a>
         <a href="https://twitter.com/bcarusofassa">
           <svg
-            className="m-1"
+            className="m-1 hover:scale-125 ease-in duration-200"
             width="32px"
             height="32px"
             viewBox="0 0 97.75 97.75"

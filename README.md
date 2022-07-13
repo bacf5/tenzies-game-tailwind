@@ -10,7 +10,7 @@ You start with 10 dice. The object of the game is to roll the dice as fast as po
 
 Is built with React and TailwindCSS.
 
-## Concepts that I practice in this project
+## Concepts that I practice in this small project
 
 - Custom Components
 - Static Pages
@@ -18,4 +18,19 @@ Is built with React and TailwindCSS.
 - Mapping data
 - Event Listener
 - Conditional Rendering
-- useSound custom hook.
+- [useSound](https://www.npmjs.com/package/use-sound) custom hook
+
+## Future ideas
+
+- ~~Add sounds effects~~ ✔️
+- Track time it took to win
+- Use localStorage to save best time / roll number
+- Track numbers of rolls
+
+## Demo
+
+[Live demo](https://tenzi-dice-game.netlify.app/) deployed on Netlify.
+
+## Credit
+
+This project idea is from [Scrimba React Course](https://scrimba.com/learn/learnreact) with Bob Ziroll

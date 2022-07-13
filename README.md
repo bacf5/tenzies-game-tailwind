@@ -1,4 +1,4 @@
-# Tenzi Dice Game
+<h1 align="center"> Tenzi Dice Game</h1>
 
 ![Tenzi dice game](https://cdn.shopify.com/s/files/1/0286/0056/5863/products/TG003TRC_B_HO20_1024x1024@2x.jpg?v=1601419812)
 

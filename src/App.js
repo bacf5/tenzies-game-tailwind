@@ -3,21 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Confetti from 'react-confetti';
 import useSound from 'use-sound';
-// import clapsWin from './sound/claps-win.wav';
-// import freezeDice from './sound/freeze-dice.wav';
 import soundies from './sound/soundies.mp3';
 
 function App() {
-  function newDie() {
-    return {
-      value: Math.ceil(Math.random() * 6),
-      isHeld: false,
-      id: uuidv4(),
-    };
-  }
-
-  // const [playbackRate, setPlaybackRate] = useState(0.75);
-
+  const [dice, setDice] = useState(allNewDice());
+  const [tenzies, setTenzies] = useState(false);
   const [play] = useSound(soundies, {
     sprite: {
       freeze: [0, 130],
@@ -25,38 +15,6 @@ function App() {
       clap: [3000, 5465],
     },
   });
-
-  function allNewDice() {
-    const numArray = [];
-    for (let i = 0; i < 10; i++) {
-      numArray.push(newDie());
-    }
-    return numArray;
-  }
-
-  const [dice, setDice] = useState(allNewDice());
-  const [tenzies, setTenzies] = useState(false);
-
-  useEffect(() => {
-    const isHeld = dice.every((die) => die.isHeld);
-    const checkValue = dice[0].value;
-    const compareValue = dice.every((die) => die.value === checkValue);
-    if (isHeld && compareValue) {
-      setTenzies(true);
-    }
-  }, [dice]);
-
-  function holdDice(id) {
-    play({ id: 'freeze' });
-    const flipingDice = dice.map((die) => {
-      if (die.id === id) {
-        return { ...die, isHeld: die.isHeld === true ? false : true };
-      }
-      return die;
-    });
-    setDice(flipingDice);
-  }
-
   const diceNumber = dice.map((die) => {
     return (
       <Die
@@ -68,6 +26,42 @@ function App() {
       />
     );
   });
+
+  useEffect(() => {
+    const isHeld = dice.every((die) => die.isHeld);
+    const checkValue = dice[0].value;
+    const compareValue = dice.every((die) => die.value === checkValue);
+    if (isHeld && compareValue) {
+      setTenzies(true);
+    }
+  }, [dice]);
+
+  function newDie() {
+    return {
+      value: Math.ceil(Math.random() * 6),
+      isHeld: false,
+      id: uuidv4(),
+    };
+  }
+
+  function allNewDice() {
+    const numArray = [];
+    for (let i = 0; i < 10; i++) {
+      numArray.push(newDie());
+    }
+    return numArray;
+  }
+
+  function holdDice(id) {
+    play({ id: 'freeze' });
+    const flipingDice = dice.map((die) => {
+      if (die.id === id) {
+        return { ...die, isHeld: die.isHeld === true ? false : true };
+      }
+      return die;
+    });
+    setDice(flipingDice);
+  }
 
   function rollingDice() {
     const checkIfWon = dice.every((die) => die.value === dice[0].value);
@@ -103,6 +97,9 @@ function App() {
         >
           {tenzies ? 'New game 🏆' : 'Roll 🎲'}
         </button>
+        {/* <span className="flex text-right justify-center pb-3">
+          Number of rolls: 1
+        </span> */}
       </div>
       <div className="justify-center flex">
         <a href="https://github.com/bacf5/tenzies-game-tailwind">

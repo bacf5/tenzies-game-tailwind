@@ -8,6 +8,7 @@ import soundies from './sound/soundies.mp3';
 function App() {
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTenzies] = useState(false);
+  const [rollNumber, setRollNumber] = useState(0);
   const [play] = useSound(soundies, {
     sprite: {
       freeze: [0, 130],
@@ -66,6 +67,7 @@ function App() {
   function rollingDice() {
     const checkIfWon = dice.every((die) => die.value === dice[0].value);
     const checkSelected = dice.every((die) => die.isHeld === true);
+    numbersOfRoll();
     if (!checkSelected) {
       play({ id: 'dices' });
     }
@@ -78,6 +80,10 @@ function App() {
         return die.isHeld ? die : newDie();
       })
     );
+  }
+
+  function numbersOfRoll() {
+    setRollNumber((num) => num + 1);
   }
 
   return (
@@ -97,9 +103,9 @@ function App() {
         >
           {tenzies ? 'New game 🏆' : 'Roll 🎲'}
         </button>
-        {/* <span className="flex text-right justify-center pb-3">
-          Number of rolls: 1
-        </span> */}
+        <span className="flex justify-center pb-3">
+          Number of rolls: {rollNumber}
+        </span>
       </div>
       <div className="justify-center flex">
         <a href="https://github.com/bacf5/tenzies-game-tailwind">

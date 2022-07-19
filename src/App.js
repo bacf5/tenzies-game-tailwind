@@ -6,9 +6,13 @@ import useSound from 'use-sound';
 import soundies from './sound/soundies.mp3';
 
 function App() {
+  // {BUG -> cuando todos los dados tienen el mismo número, y estan todos isHeld={true} excepto el dado que falta clickear, vuelven todos a generar un nuevo Die}
+
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTenzies] = useState(false);
   const [rollNumber, setRollNumber] = useState(0);
+  const checkIfWon = dice.every((die) => die.value === dice[0].value);
+  const checkSelected = dice.every((die) => die.isHeld === true);
   const [play] = useSound(soundies, {
     sprite: {
       freeze: [0, 130],
@@ -65,8 +69,6 @@ function App() {
   }
 
   function rollingDice() {
-    const checkIfWon = dice.every((die) => die.value === dice[0].value);
-    const checkSelected = dice.every((die) => die.isHeld === true);
     numbersOfRoll();
     if (!checkSelected) {
       play({ id: 'dices' });
@@ -83,8 +85,15 @@ function App() {
   }
 
   function numbersOfRoll() {
-    setRollNumber((num) => num + 1);
+    if (!tenzies) {
+      setRollNumber((num) => num + 1);
+    } else {
+      localStorage.setItem('record', JSON.stringify(rollNumber));
+      setRollNumber(0);
+    }
   }
+
+  const gettingRollNumber = JSON.parse(localStorage.getItem('record'));
 
   return (
     <main className="container  mx-auto m-12 p-8 bg-[#F5F5F5] rounded-lg flex flex-col text-center justify-center font-inter font-bold">
@@ -105,7 +114,8 @@ function App() {
         </button>
         <span className="flex justify-center pb-3">
           Number of rolls: {rollNumber}
-        </span>
+        </span>{' '}
+        <span className="flex justify-end">Record: {gettingRollNumber}</span>
       </div>
       <div className="justify-center flex">
         <a href="https://github.com/bacf5/tenzies-game-tailwind">

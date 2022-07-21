@@ -10,9 +10,10 @@ function App() {
 
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTenzies] = useState(false);
-  const [rollNumber, setRollNumber] = useState(0);
   const checkIfWon = dice.every((die) => die.value === dice[0].value);
   const checkSelected = dice.every((die) => die.isHeld === true);
+  const [rollNumber, setRollNumber] = useState(0);
+  const gettingRollNumber = JSON.parse(localStorage.getItem('record'));
   const [play] = useSound(soundies, {
     sprite: {
       freeze: [0, 130],
@@ -76,6 +77,7 @@ function App() {
     if (checkIfWon) {
       setDice(allNewDice());
       setTenzies(false);
+      setRollNumber(0);
     }
     setDice((oldDice) =>
       oldDice.map((die) => {
@@ -87,13 +89,13 @@ function App() {
   function numbersOfRoll() {
     if (!tenzies) {
       setRollNumber((num) => num + 1);
-    } else {
+    } else if (tenzies && gettingRollNumber > rollNumber) {
       localStorage.setItem('record', JSON.stringify(rollNumber));
+      setRollNumber(0);
+    } else {
       setRollNumber(0);
     }
   }
-
-  const gettingRollNumber = JSON.parse(localStorage.getItem('record'));
 
   return (
     <main className="container  mx-auto m-12 p-8 bg-[#F5F5F5] rounded-lg flex flex-col text-center justify-center font-inter font-bold">
@@ -114,8 +116,13 @@ function App() {
         </button>
         <span className="flex justify-center pb-3">
           Number of rolls: {rollNumber}
-        </span>{' '}
-        <span className="flex justify-end">Record: {gettingRollNumber}</span>
+        </span>
+        {/* <span className="flex justify-end">Record: {gettingRollNumber}</span> */}
+        <div className="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-[#0b2333] relative inline-block m-3 hover:scale-105 transition ease-in">
+          <span className="relative text-white font-bold text-lg ">
+            Your best: {gettingRollNumber}
+          </span>
+        </div>
       </div>
       <div className="justify-center flex">
         <a href="https://github.com/bacf5/tenzies-game-tailwind">

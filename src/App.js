@@ -89,13 +89,18 @@ function App() {
   function numbersOfRoll() {
     if (!tenzies) {
       setRollNumber((num) => num + 1);
-    } else if (tenzies && gettingRollNumber > rollNumber) {
+    } else if (rollNumber < gettingRollNumber) {
       localStorage.setItem('record', JSON.stringify(rollNumber));
-      setRollNumber(0);
     } else {
       setRollNumber(0);
     }
   }
+  // else {
+  //   localStorage.setItem('record', JSON.stringify(rollNumber));
+  //   setRollNumber(0);
+  // }
+
+  // console.log(gettingRollNumber, rollNumber);
 
   return (
     <main className="container  mx-auto m-12 p-8 bg-[#F5F5F5] rounded-lg flex flex-col text-center justify-center font-inter font-bold">

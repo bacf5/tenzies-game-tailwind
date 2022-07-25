@@ -13,7 +13,7 @@ function App() {
   const checkIfWon = dice.every((die) => die.value === dice[0].value);
   const checkSelected = dice.every((die) => die.isHeld === true);
   const [rollNumber, setRollNumber] = useState(0);
-  const gettingRollNumber = JSON.parse(localStorage.getItem('record'));
+  const savedRollNumber = JSON.parse(localStorage.getItem('record'), '');
   const [play] = useSound(soundies, {
     sprite: {
       freeze: [0, 130],
@@ -21,6 +21,7 @@ function App() {
       clap: [3000, 5465],
     },
   });
+
   const diceNumber = dice.map((die) => {
     return (
       <Die
@@ -70,13 +71,14 @@ function App() {
   }
 
   function rollingDice() {
-    numbersOfRoll();
     if (!checkSelected) {
+      numbersOfRoll();
       play({ id: 'dices' });
     }
     if (checkIfWon) {
       setDice(allNewDice());
       setTenzies(false);
+      saveOrNot();
       setRollNumber(0);
     }
     setDice((oldDice) =>
@@ -87,20 +89,15 @@ function App() {
   }
 
   function numbersOfRoll() {
-    if (!tenzies) {
-      setRollNumber((num) => num + 1);
-    } else if (rollNumber < gettingRollNumber) {
-      localStorage.setItem('record', JSON.stringify(rollNumber));
-    } else {
-      setRollNumber(0);
-    }
+    if (!tenzies) return setRollNumber((num) => num + 1);
   }
-  // else {
-  //   localStorage.setItem('record', JSON.stringify(rollNumber));
-  //   setRollNumber(0);
-  // }
 
-  // console.log(gettingRollNumber, rollNumber);
+  function saveOrNot() {
+    if (savedRollNumber === null)
+      return localStorage.setItem('record', JSON.stringify(rollNumber));
+    if (rollNumber < savedRollNumber)
+      return localStorage.setItem('record', JSON.stringify(rollNumber));
+  }
 
   return (
     <main className="container  mx-auto m-12 p-8 bg-[#F5F5F5] rounded-lg flex flex-col text-center justify-center font-inter font-bold">
@@ -122,10 +119,10 @@ function App() {
         <span className="flex justify-center pb-3">
           Number of rolls: {rollNumber}
         </span>
-        {/* <span className="flex justify-end">Record: {gettingRollNumber}</span> */}
+        {/* <span className="flex justify-end">Record: {savedRollNumber}</span> */}
         <div className="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-[#0b2333] relative inline-block m-3 hover:scale-105 transition ease-in">
           <span className="relative text-white font-bold text-lg ">
-            Your best: {gettingRollNumber}
+            Your best: {savedRollNumber}
           </span>
         </div>
       </div>

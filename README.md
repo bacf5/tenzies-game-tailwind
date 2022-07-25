@@ -24,8 +24,9 @@ Is built with React and TailwindCSS.
 
 - ~~Add sounds effects~~ ✔️
 - Track time it took to win
-- Use localStorage to save best time / roll number
-- Track numbers of rolls
+- ~~Use localStorage to save~~ best time / ~~roll number~~ ✔️
+- ~~Track numbers of rolls~~ ✔️
+- Add dice image instead of just displaying a numbers
 
 ## Demo
 
